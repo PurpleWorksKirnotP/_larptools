@@ -1,0 +1,684 @@
+encoding="utf-8"
+
+import requests
+import sys
+import os
+import urllib.request
+import os
+import ctypes
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except Exception:
+        return False
+
+def run_as_admin():
+    # Re-launch the script with admin rights, triggering the UAC prompt
+    ctypes.windll.shell32.ShellExecuteW(
+        None, "runas", sys.executable, " ".join(sys.argv), None, 1
+    )
+
+if not is_admin():
+    run_as_admin()
+    sys.exit()
+else:
+    print(f"[DEBUG]: running as administrator")
+
+sys.stdout.reconfigure(encoding='utf-8')
+
+try:
+    version = requests.get("https://raw.githubusercontent.com/PurpleWorksKirnotP/OP/refs/heads/main/Mains/Python/NYHCKAssets/NYHCKV.txt").text
+except Exception as e:
+    version = f"OFFLINE..."
+    print(f"Offline mode, using fallback: {e}")
+
+import time
+import random
+
+tn = "---[NyaHax]:"
+
+# to note: This is a larp larp tool. U aren't hacking anything script kiddie
+
+h = """
+   ________  ________  ________      ________  ________  ________  ____ ___ 
+  ╱    ╱   ╲╱    ╱   ╲╱        ╲    ╱    ╱   ╲╱        ╲╱        ╲╱    ╱   ╲
+ ╱         ╱         ╱         ╱   ╱         ╱         ╱         ╱         ╱
+╱         ╱╲__      ╱         ╱   ╱         ╱         ╱       --╱        _╱
+╲__╱_____╱   ╲_____╱╲___╱____╱    ╲___╱____╱╲___╱____╱╲________╱╲____╱___╱  
+Go crrrrazy~! Nya~!
+
+============================================================================
+
+= Common -
+
+- h = prints this message 
+- exit, e, -e = Exits NH
+- download <savefilenameas> = downloads the latest version of NH
+
+= Info -
+
+- WhatIsHacking = Gives a definition of hacking in cyber security.
+- WhatIsABotnet = Gives a definition of botnets and how they work.
+
+= Payload hosting - 
+
+- lc, localhost = Hosts payload injectors on pc
+- IPInj, IPInject <IP> = Force hosts payloads on different IPs
+- SoftInj, sij <IP> <Disable/Enable>
+
+= Payload Management - 
+
+- Stop <IP> = Terminates all processes being run on IP and deletes NyaHOS on IP.
+- l, list = lists all infected IPs (Including soft injected)
+
+= Illusionary! - Trick the world.
+
+- BA, BotAccounts - Creates fake bot accounts on multiple social media platforms. (REQUIRES SIJ)
+- RepostRepos, RR <RepoURL> - Puts backdoors in github repos and reposts them to botted accounts. (REQUIRES SIJ)
+- ListRepos, LR - Lists all repos that can be reposted. (REQUIRES SIJ)
+- PegasusMessaging, PMSG <Message> <ProgramToInject> - Sends messages to local devices, infecting them. (REQUIRES SIJ AND MALBUILD)
+
+= Infection -
+
+- bn <ProgramToInject> <True/False> - Infects devices to botnet
+- pswdCrack <username> <site> - Cracks passwords.. 70/30 success rate.
+- DDOS, SOL, NHZD <IP> - Overwhelms servers/ips using infected devices
+- dh, dhijack, devicehijack <deviceID> <IP> - Hijacks specific devices and forces them to mine bitcoin (REQUIRES SIJ, MALBUILD)
+- malbuild, mb, malwarebuild <program>- Builds malware to infect devices and force them to mine bitcoin (REQUIRES SIJ)
+
+= Panic -
+
+- panic, p - Disconnects everything and exits.
+
+= Download latest NH
+
+- downloadNew, dn, dwnh - Downloads latest NH.py file from github. (REQUIRES INTERNET)
+"""
+
+offurlrepos = {
+    "https://github.com/mattpocock/skills",
+    "https://github.com/dietrichgebert/ponytail",
+    "https://github.com/fmtlib/fmt",
+    "https://github.com/affaan-m/ecc",
+    "https://github.com/anthropics/skills",
+    "https://github.com/blader/humanizer",
+    "https://github.com/nousresearch/hermes-agent",
+    "https://github.com/juliusbrussee/caveman",
+    "https://github.com/magnitudedev/magnitude",
+    "https://github.com/bikini/exploitarium",
+    "https://github.com/bannedbook/fanqiang",
+    "https://github.com/debpalash/voicestudio",
+    "https://github.com/google-research/timesfm"
+}
+
+def add_entry(table, ip):
+    table[ip] = True
+
+# Vars for functions
+
+localhosting = False
+bnetted = False
+bndn = 0
+Sij = False
+malb = False
+
+fileextensions = [
+    ".exe",
+    ".dll",
+    ".scr",
+    ".vbs",
+    ".js",
+    ".bat",
+    ".cmd",
+    ".docm",
+    ".xlsm",
+    ".ps1",
+    ".jar",
+    ".msi",
+    ".com",
+    ".pegasusmal",
+]
+
+filenames = [
+    "invoice",
+    "update",
+    "svchost",
+    "winlogon",
+    "driver",
+    "config",
+    "readme",
+    "setup",
+    "install",
+    "patch",
+    "license",
+    "manual",
+    "support",
+    "admin",
+    "system",
+    "security",
+    "network",
+    "backup",
+    "database",
+    "log"
+]
+
+ips = {}
+
+# Below this are the actual funcs
+
+def dnhpy():
+    import urllib.request
+
+    url = "https://raw.githubusercontent.com/PurpleWorksKirnotP/OP/main/Mains/Python/NYHCKAssets/Main/DummedDown/NH.py"
+
+    if onWindows == True:
+        Woutput_file = f"C:\\users\\{usrlgn}\\downloads\\{url.split('/')[-1]}"
+        urllib.request.urlretrieve(url, Woutput_file)
+        print(f"{tn} Saved as: {Woutput_file} saved in downloads folder.")
+    elif onIos == True:
+        Ioutput_file = f"/home/{url.split('/')[-1]}"
+        urllib.request.urlretrieve(url, Ioutput_file)
+        print(f"{tn} Saved as: {Ioutput_file} in /home do cd /home to access it.")
+    else:
+        print(f"{tn} We're assuming you're on Linux. Saving to /home/{url.split('/')[-1]}...")
+        Loutput_file = f"/home/{url.split('/')[-1]}"
+        urllib.request.urlretrieve(url, Loutput_file)
+        print(f"{tn} Saved as: {Loutput_file}")
+    
+
+# ^^ Download Latest NH.py file ^^
+
+def tt(text, delay=0.01):
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    print()
+
+# Type writter func ^^
+
+def dwnlod(url):
+    folder = ""
+    if onWindows == True:
+        folder = "C:\\Program Files\\_nhprogfiles"
+    else:
+        folder = "/home/NHprogfiles"
+    os.makedirs(folder, exist_ok=True)
+    filename = os.path.join(folder, "NH.py")
+
+    urllib.request.urlretrieve(url, filename)
+    print(f"{tn} downloaded NH.py | saved to {folder}")
+
+# Download NH ^^
+
+def pming(message, program2inj):
+    if Sij == True and malb == True:
+        print(f"{tn} Initiating...")
+        for i in range(1, random.randint(100,999)):
+            print(f"{tn} compiling message {i} with {program2inj}... | Preping to send to ************{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}...")
+            time.sleep(0.0001)
+        time.sleep(1)
+        print(f"{tn} Compiling completed, sending to local devices (Devices on infected Ips too)...")
+        for i in range(1,random.randint(100, 999)):
+            print(f"{tn} SENT TO ************{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}...",0.00001)
+            tt(f"        [INFO]: DEVICE IMEI: {random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}{random.randint(1,9)}",0.00001)
+            tt(f"        [INFO]: DEVICE IP: {random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}", 0.00001)
+            tt(f"        [INFO]: EXTRACTED INFECTED DEVICE'S USER'S PERSONAL INFO... POSTED ON DOXBIN XD",0.00001)
+            tt(f"        [INFO]: EXTRACTED PHOTOS, FILES, AND DOCUMENTS... SAVED TO NH CLOUD.",0.00001)
+            time.sleep(0.0001)
+        time.sleep(1)
+        print(f"{tn} SUCCESSFULLY SENT ALL MESSAGES SUCCESSFULLY!")
+        tt(f"{tn} AWAITING NEW COMMAND.",0.0001)
+    else:
+        print(f"{tn} SIJ and Malb is required.")
+
+def botaccs():
+    if bnetted == True:
+        print(f"{tn} Starting account creation on multiple platforms...")
+        print(f"{tn} Creating {bndn} accounts on platform {random.choice(['Twitter', 'Instagram', 'Facebook', 'Reddit', 'GitHub'])} | Account LID: {random.randint(1000,9999999)}")
+        for i in range(1, bndn + 1):
+            print(f"{tn} Account {i} created! | Account LID: {random.randint(1000,9999999)}")
+            time.sleep(0.001)
+        time.sleep(0.01)
+    else:
+        print(f"{tn} This command requires a botnet to be created first. Use -bn <program> <True/False> to create a botnet.")
+
+def listrepos():
+    print(f"{tn} Listing all repos...")
+    for repo in offurlrepos:
+        print(f"{tn} {repo}")
+    print(f"{tn} Total repos: {len(offurlrepos)}")
+
+def repostrepos(repo):
+    if repo in offurlrepos and bnetted == True:
+        print(f"{tn} Reposting {repo} on {bndn} bot accounts...")
+        for i in range(1, bndn + 1):
+            print(f"{tn} Reposted {repo} with backdoor on bot account {i} | Account LID: {random.randint(1000,9999999)}")
+            time.sleep(0.001)
+    else:
+        print(f"{tn} Repo {repo} not found. OR Botnet not created. Use -bn <program> <True/False> to create a botnet.")
+
+def definitionofhacking():
+    print(f"{tn} Info: ")
+    tt("Hacking in cyber security refers to the misuse of devices like computers, smartphones, tablets, and networks to cause damage to or corrupt systems, gather information on users, steal data and documents, or disrupt data-related activity.", 0.02)
+    time.sleep(1)
+    print()
+    tt("A traditional view of hackers is a lone rogue programmer who is highly skilled in coding and modifying computer software and hardware systems. But this narrow view does not cover the true technical nature of hacking. Hackers are increasingly growing in sophistication, using stealthy attack methods designed to go completely unnoticed by cybersecurity software and IT teams. They are also highly skilled in creating attack vectors that trick users into opening malicious attachments or links and freely giving up their sensitive personal data.", 0.02)
+    time.sleep(1)
+    print()
+    tt("An attack vector is a pathway or method used by a hacker to illegally access a network or computer in an attempt to exploit system vulnerabilities. Hackers use numerous attack vectors to launch attacks that take advantage of system weaknesses, cause a data breach, or steal login credentials. Such methods include sharing malware and viruses, malicious email attachments and web links, pop-up windows, and instant messages that involve the attacker duping an employee or individual user.", 0.02)
+    time.sleep(1)
+    print()
+    tt("As a result, modern-day hacking involves far more than just an angry kid in their bedroom. It is a multibillion-dollar industry with extremely sophisticated and successful techniques.", 0.02)
+
+def whatisbotnet():
+    print(f"{tn} Info: ")
+    tt("A botnet is a coordinated network of internet-connected devices—including computers, mobile phones, and IoT hardware—infected with specialized malware that grants remote control to a single attacking party. These hijacked devices, often called zombies, act in unison under the command of a bot-herder to execute automated, large-scale cyberattacks that would be impossible for a single machine to perform.", 0.01)
+    print()
+    time.sleep(1)
+    tt("Key Points:", 0.01)
+    print()
+    tt("- Distributed Power: Botnets harness the collective computing resources of thousands of compromised systems to amplify the impact of cyberattacks. ", 0.05)
+    print()
+    tt("- Silent Operation: Infected devices typically continue to function normally, leaving the owner unaware that their hardware is participating in malicious activity. ", 0.05)
+    print()
+    tt("- Automated Scalability: A single bot-herder can manage millions of globally dispersed nodes simultaneously through a centralized or decentralized command structure. ", 0.05)
+    print()
+    tt("- Versatile Weaponry: Threat actors utilize these networks for diverse objectives, ranging from crippling websites with traffic to harvesting sensitive corporate credentials. ", 0.05)
+    print()
+    tt("- Persistent Risk: Modern botnets employ advanced evasion techniques, such as domain-generation algorithms, to maintain control even when parts of their infrastructure are dismantled. ", 0.05)
+
+def malbuild(progn):
+    global malb
+    global Sij
+    if Sij == True:
+        malb = True
+        print(f"{tn} STARTING MALBUILD...")
+        print(f"{tn} PROGRAM: {progn}")
+        time.sleep(1)
+        print(f"{tn} Compiling spyware and mining files into {progn}...")
+        for i in range(1, random.randint(100, 1001)):
+            print(f"{tn} Adding {random.choice(filenames)}{random.randint(1000, 99999)}{random.choice(fileextensions)} to {progn} payload...")
+            time.sleep(0.001)
+        time.sleep(1)
+        print(f"{tn} Successfully added files to {progn} payload. | Total Size: {random.randint(50, 500)} MB")
+        print()
+        print(f"{tn} Adding {progn} to Device Hijack Payloads...")
+        time.sleep(1)
+        print(f"{tn} Successfully added {progn} to Device Hijack Payloads.")
+        print(f"{tn} Do -dh <deviceID> <IP> to hijack devices with {progn} payload.")
+    else:
+        print(f"{tn} This command requires -sij to be enabled first.")
+
+def dh(deviceip, ip):
+    print(f"{tn} initiating attack on {ip}")
+    for i in range(1, random.randint(100, 1001)):
+        print(f"{tn} Attempting OS Flash on IP/Server: {ip} | Attempt: {i}")
+        time.sleep(0.01)
+    time.sleep(1)
+    print(f"{tn} Successfully flashed OS onto {ip} | Hijacking device {deviceip} with infected files...")
+    for i in range(1, random.randint(100, 1001)):
+        print(f"{tn} FILES TRANSFERED: {i} | DEVICEID: {deviceip} | IP: {ip} | SIZE: {random.randint(10, 500)} MB")
+        time.sleep(0.001)
+    time.sleep(1)
+    print(f"{tn} successfully transfered files to {deviceip}! Enabling mining on device...")
+    uinp = input(f"{tn} Enable descrete mining on device? [Y/N]: ").strip().lower()
+    if uinp in ("y", "yes"):
+        print(f"{tn} Enabling descrete mining on device {deviceip}...")
+        for i in range(1, random.randint(100, 1001)):
+            print(f"{tn} CONVERTED COMPRESSED FILE TO MINING FILE... | DEVICEID: {deviceip} | IP: {ip} | SIZE: {random.randint(50, 150)} MB")
+            time.sleep(0.001)
+        time.sleep(1)
+        print(f"{tn} Successfully enabled mining on device {deviceip} | IP: {ip} | Mining Rate: {random.randint(50, 100)} MH/s")
+    else:
+        print(f"{tn} Enabling blatant mining on device {deviceip}...")
+        for i in range(1, random.randint(100, 1001)):
+            print(f"{tn} CONVERTED COMPRESSED FILE TO MINING FILE... | DEVICEID: {deviceip} | IP: {ip} | SIZE: {random.randint(100, 1500)} MB")
+            time.sleep(0.001)
+        time.sleep(1)
+        print(f"{tn} Successfully enabled mining on device {deviceip} | IP: {ip} | Mining Rate: {random.randint(200, 500)} MH/s")
+    print(f"{tn} Hijack finished. Device {deviceip} is now mining bitcoin for you.")
+    print(f"{tn} Awaiting new command...")
+
+def pswdc(user, site):
+    print(f"{tn} Starting Password Crack Process...")
+    print(f"{tn} User: {user}")
+    print(f"{tn} Site: {site}")
+    print(f"==========================================")
+    print(f"{tn} Starting method 1: SQL Injection")
+    time.sleep(1)
+    lotto = random.randint(1,2)
+    filn = {
+        "passwords",
+        "supportteampasswords",
+        "adminpasswords",
+        "ownpasswords",
+        "secret",
+        "sitekeys",
+        "environtest",
+        "ITtechdeppsd"
+    }
+    fileex = {
+        ".kdb",
+        ".kbdx",
+        ".lpux",
+        ".agilekeychain",
+        ".dash",
+        ".ppk",
+        ".pem",
+        ".cer",
+        ".der",
+        ".pfx",
+        ".p12",
+        ".pub",
+        ".env",
+        ".conf",
+        ".config",
+        ".json",
+        ".yaml",
+        ".yml",
+        ".xml",
+        ".plist",
+        ".txt",
+        ".csv",
+        ".xls",
+        ".xlsx",
+        ".bak",
+        ".old",
+        ".tmp"
+    }
+    if lotto == 1:
+        print(f"{tn} Success! found default STEA password!")
+        time.sleep(1)
+        print(f"{tn} password: SUPPORT{site}U{user}N{random.randint(1000,9999)}")
+    else:
+        print(f"{tn} Searching local storage...")
+        time.sleep(0.2)
+        for i in range(10, random.randint(100,999)):
+            print(f"{tn} SEARCHED LOCAL STORAGE: FOUND: {random.choice(filn)}{random.choice(fileex)} CHECKING SERVER IF IT EXISTS")
+            for i in range(5, 10):
+                print(f"{tn} AM > REQUEST:FLFOUND(FILEN:FILEX).CHECK()")
+                time.sleep(0.2)
+                print(f"{tn} FOUND AT SERVER {i}, SITE {site}")
+            time.sleep(0.01)
+        print(f"{tn} success! found IT Support Easy Access Password: SUPPORT{site}U{user}N{random.randint(1000,9999)}")
+    print(f"{tn} Cracking finished. Try password at your own risk...")
+    print(f"{tn} IT Support Desk Employees can detect who logins at accounts, be careful.")
+
+def SOL(ip, host):
+    global Sij
+    global bndn
+    global bnetted
+    if Sij == True and bnetted == True:
+        print(f"{tn} PRE SOL:")
+        print(f"- Hosting on {host}")
+        print(f"- Payload Reciever: {ip}")
+        time.sleep(1)
+        print("")
+        print(f"{tn} starting with {bndn} devices...")
+        for i in range(1,1001):
+            print(f"{tn} {bndn} Requests made to {ip}! | Response: BAD | Connection: BAD")
+            time.sleep(0.01)
+        print(f"{tn} {bndn} Requests made to {ip} | Response: SERVERFROZEN | Connection: CANNOTCONNECT2SERVER")
+        time.sleep(1)
+        print(f"{tn} Successfully overwhelmed server! Awaiting new payload to host on {host}")
+
+def panic():
+    print(f"{tn} Disconnecting all operations running from {ips}...")
+    time.sleep(1)
+    if localhosting == True:
+        print(f"{tn} Disconnecting lc")
+        for i in range(1,101):
+            print(f"{tn} TERMINATED OPERATION NO {random.randint(1,999)} UNDER CODE: PAN1C")
+    time.sleep(1)
+    if Sij == True:
+        print(f"{tn} Releasing soft injected ips and infected devices...")
+        for i in range(1,101):
+            print(f"{tn} DELETED INFCTPRG FROM DEVICE ID: {random.randint(1000,9999)}")
+    time.sleep(0.1)
+    print(f"{tn} RELEASING IPS (IF ANY)")
+    time.sleep(1)
+    print(f"{tn} DELETING ALL SAVED DATA... [IF ANY]")
+    time.sleep(1)
+    print(f"{tn} READY TO CLOSE...")
+    print(f"{tn} AM > e")
+    time.sleep(1)
+
+def disablesipi(ip):
+    print(f"{tn} Disabling...")
+    time.sleep(0.5)
+    stop(ip)
+    print(f"{tn} disabled! run -sij {ip} to enable again...")
+
+def softipinj(ip):
+    global Sij
+    print(f"{tn} Soft inject on {ip}...")
+    for i in range(1,201):
+        print(f"{tn} pinging {ip}... | Attempt {i}")
+        time.sleep(0.001)
+    time.sleep(1)
+    print(f"{tn} Stable connection... Making {ip} as a payload hoster...")
+    for i in range(1, 201):
+        print(f"{tn} MADE REQUEST (POST): [Context: HOSTF(Type:FILE)] Set priority: [HIGH;=200MBPS] | REQUEST {i} OUT OF 200")
+        print(f"{tn} MESSAGE RECIEVED FROM SERVER/IP, REQUEST: [Context: ACCEPTED] | MBPS ALLOCATED...")
+        time.sleep(0.001)
+    print(f"{tn} All requests sent! Testing if inject successful...")
+    print(f"{tn} AM > ptstpl {ip} true 200")
+    for i in range(1,101):
+        print(f"{tn} Payload test | FILES: {i}/100 | Uid: {random.randint(1000,9999)}")
+        time.sleep(0.01)
+    time.sleep(0.5)
+    print(f"{tn} test success | Details: IP transfered {random.randint(10,6114)} mb of data over 100 requests all returning with a success.")
+    time.sleep(0.1)
+    print(f"{tn} Cleaning up files...")
+    for i in range (1,101):
+        print(f"{tn} DELETING TEST FILE {i} | size {random.randint(10,500)} mb")
+    time.sleep(0.001)
+    print(f"{tn} Cleaned out all test files... Awaiting command on host {ip}...")
+    add_entry(ips, ip)
+    Sij = True
+
+def stop(ip):
+    print(f"{tn} Stopping {ip}...")
+    ips[ip] = False
+
+def fbotnet(Fprog, bau):
+    global bndn
+    global bnetted
+    pipelines = {
+        "s:releases",
+        "bu:releases",
+        "gm:releases"
+    }
+
+    print(f"{tn} pipelines: {pipelines}")
+
+    imp = input(f"{tn} type out a release pipeline: ")
+
+    for p in pipelines:
+        if p.lower() in imp:
+            print(f"{tn} proceeding...")
+            break
+        else:
+            print(f"{tn} failed, exitting to prevent crash")
+            break
+
+    print(f"{tn} Preparing payload with {Fprog}... Delivering via {imp}")
+    print(f"{tn} BAU: {bau}")
+    time.sleep(1)
+    for i in range(1, 501):
+        print(f"{tn} Forcing payload on vulnerable devices... | DEVICEID: {random.randint(1000,9999)} | FOUND ON: {random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}")
+        time.sleep(0.01)
+    time.sleep(2)
+    rndnb = random.randint(1,500)
+    print(f"{tn} successfully infected {rndnb} devices out of 500!")
+    bndn = rndnb
+    bnetted = True
+
+def listinfects():
+    global ips
+    print(f"================================")
+    print(f"{tn} All Infected Ips")
+    for ip, value in ips.items():
+        print(f"{tn} infected IP: {ip} | Enabled: {value}")
+    print(f"=================================")
+
+def IPInj(Fip):
+    global localhosting
+    if localhosting == True:
+        print(f"{tn} Initializing attack on {Fip}")
+        time.sleep(1)
+        for i in range(1, 501):
+            print(f"{tn} BRUTE FORCING PASSWORD | Attempt: {i}")
+            time.sleep(0.001)
+        print(f"{tn} Flashing OS onto IP/Router")
+        time.sleep(2)
+        print(f"{tn} Generated NyaHOS... Attempting to flash on IP/Router")
+        for i in range(1, 30):
+            print(f"{tn} Transfered {i} mb of data...")
+            time.sleep(2)
+        print(f"{tn} Successfully transfered! Starting up NyaHOS on IP router. This may take some time.")
+        time.sleep(2)
+        print(f"{tn} success! Flashing payload host OS on router/IP...")
+        time.sleep(1)
+        for i in range(1, 501):
+            print(f"{tn} FROM HOST PC GENERATED FILE: NYHCKDEPFILE{random.randint(1000,9999)}.exe TO {Fip}")
+            time.sleep(0.01)
+        add_entry(ips, Fip)
+        print(ips)
+        print(f"{tn} success! IP/Router infected.")
+    else:
+        print(f"[ERROR]: do -lc first dumbass")
+
+def lc():
+    global localhosting
+
+    if localhosting == False:
+        print(f"{tn} Routing Operations To Localhost, Nya!")
+        for i in range(1, random.randint(1001, 9999)):
+            print(f"{tn} OPERATION ROUTED FROM {random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)} TO LOCALHOST")
+            time.sleep(0.01)
+        print(f"{tn} Ready To Host Payload. Recommended =  IPInj")
+        localhosting = True
+    else:
+        print(f"{tn} Do you want to end localhost?")
+        yn = input("[Y/N?]:").strip().lower()
+        if yn in ("y", "yes"):
+            print(f"{tn} killing all processes attached to localhost...")
+            time.sleep(1)
+            print(f"{tn} done!")
+            localhosting = False
+        else:
+            print(f"{tn} Exitting")
+
+inta = input("enter your operating system. [ios/windows/linux]: ").lower()
+
+if inta == "ios":
+    print(f"Running NyaHax {version} on IOS/Mac")
+    onIos = True
+elif inta == "windows":
+    print(f"Running NyaHax {version} on Windows.")
+    onWindows = True
+    usrlgn = os.getlogin()
+else:
+    print(f"Running Nyahax {version} on Linux.")
+
+print(f"Made this in a fucking hospital. So go crazy motha fuckas!")
+print(f"Made and maintained by purpleworkskirnotp on github... | V {version}")
+print(f"")
+print(h)
+
+# DONT TOUCH TESTA TESTB
+
+testa = 12
+testb = 13
+
+while True:
+    uwu = input(f"{tn} ")
+
+    bd = uwu.split()
+
+    flag = bd[0].lower()
+
+    context = bd[1].lower() if len(bd) > 1 else None
+    context2 = bd[2].lower() if len(bd) > 2 else None
+    context3 = bd[3].lower() if len(bd) > 3 else None
+
+    if flag == "-h":
+        print(h)
+    elif flag in ["exit", "e", "-e"]:
+        break
+    elif flag in ["-lc", "localhost"]:
+        lc()
+    elif flag in ["-ippinj", "-ipinj", "-ipinj", "-ipj", "ipinject"]:
+        IPInj(context)
+    elif flag in ["-l", "-list"]:
+        listinfects()
+    elif flag in ["-bn", "-bnt", "botnet"]:
+        if bnetted == True:
+            print("You cannot bn again. Would you like to brick/uninfect devices?")
+            ui = input("[y/n]: ").lower()
+            if ui in ["y", "n"]:
+                fbotnet(context, context2)
+            else:
+                print(f"{tn} exitted")
+        else:
+            fbotnet(context, context2)
+    elif flag in ["stop", "-s"]:
+        stop(context)
+    elif flag in ["-softinj", "-sij", "softinject"]:
+        if context2 == "disable":
+            disablesipi(context)
+        elif context2 == "enable":
+            softipinj(context)
+        else:
+            print(f"{tn}: Disable/Enable not found in context2... Exiting...")
+    elif flag in ["-p", "-panic", "p", "panic"]:
+        panic()
+        break
+    elif flag in ["-ddos", "-sol", "-nhzd"]:
+        SOL(context, context2)
+    elif flag in ["-pswdcrack","-pcrack","-pc","passwordcrack"]:
+        if localhosting == True:
+            pswdc(context, context2)
+        else:
+            print(f"{tn} This command requires -lc")
+    elif flag in ["-dh", "-dhijack", "devicehijack"]:
+        if Sij == True:
+            dh(context, context2)
+        else:
+            print(f"{tn} This command requires -sij")
+    elif flag in ["-dh", "-dhijack", "-devicehijack"]:
+            if malb == True and Sij == True:
+                dh(context, context2)
+            else:
+                print(f"{tn} This command requires -sij and -malbuild to be enabled first.")
+    elif flag in ["-malbuild", "-mb", "-malwarebuild"]:
+            if malb == True:
+                print(f"{tn} You cannot malbuild again. Would you like to disable soft inject and re-enable it?")
+                ui = input("[y/n]: ").lower()
+                if ui in ["y", "yes"]:
+                    malbuild(context)
+                else:
+                    print(f"{tn} exitted")
+            else:
+                malbuild(context)
+    elif flag in ["whatishacking"]:
+        definitionofhacking()
+    elif flag in ["whatisabotnet"]:
+        whatisbotnet()
+    elif flag in ["-ba", "botaccounts"]:
+        botaccs()
+    elif flag in ["-lr", "listrepos"]:
+        listrepos()
+    elif flag in ["-rr", "repostrepos"]:
+        repostrepos(context)
+    elif flag in ["-dn", "downloadnew", "-dwnh"]:   
+        dnhpy()
+    elif flag in ["-pmsg", "pegasusmessaging"]:
+        pming(context, context2)
+    elif flag in ["-download", "download"]:
+        dwnlod("https://github.com/PurpleWorksKirnotP/OP/raw/refs/heads/main/Mains/Python/NYHCKAssets/Main/NH.py")    
+    else:
+        print(f"{tn} command not found... Try typing -h")
